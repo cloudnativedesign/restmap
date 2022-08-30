@@ -1,0 +1,41 @@
+version: 2022-08-01
+type: batch 
+config:
+  endpoints:
+    baseurl:
+      url: management.azure.com/{scope}
+      params:
+        scope: scope
+    reservationlist:
+      relativeurl:
+        base: baseurl
+        relative: /providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption/reservationDetails&api-version={ApiVersion}
+        params:
+          reservationOrderId: reservationOrderId
+          ApiVersion: ApiVersion
+            default: 2021-10-01
+
+
+  # Confiures all parameters used within the template
+  params:
+    # Each parameter describes its type, if its iterable the range of values, or if it needs to be resolved, the resolution method (aka reading from a connection to a database or file through a connector
+    reservationOrderId:
+      name: reservationOrderId
+      type: String
+      # This indicates that the range of this parameter needs to be read through a connector from a SQL DB table. All 'Loader' components can be parametrized as well to be reused across multiple endpoints in a configuration
+      loader: DBReservationOrder
+
+    scope:
+      name: scope
+      type: String
+      descr: Scope used in retrieval of something 
+    ApiVersion:
+    Scope:
+
+  loaders:
+    DBreservationLoader:
+      connectionstring: something
+      authentication: something
+      table:
+        name: ConfigurationElements
+        col: [Id]
