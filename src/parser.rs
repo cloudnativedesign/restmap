@@ -11,19 +11,17 @@ mod treeparser;
 // * Parse Endpoint section
 // * Parse Params
 // * Parse Loaders
- 
-mod configparser;
 
 // Traits
-trait Parse {
+trait Parse<T> {
     /// Parse configuration blocks from a passed RawConfig into a parseTree representing a program tree
     /// with resolved execution blocks.
-    fn parse(config: configparser::RawConfig) -> configparser::ParseTree {}
+    fn parse(config: configparser::RawConfig) {}
 
 }
 
 /// Validate configuration parse types
-trait Validate: Parse {}
+trait Validate<T> : Parse<T> {}
 
 // Struct definitions
 

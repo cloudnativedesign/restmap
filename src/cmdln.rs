@@ -18,11 +18,8 @@ pub fn connect_to_cli() -> Vec<String> {
                 .help("Filepath to configuration YAML file to be processed")
                 .required(true)
             )
-        .get_matches()
+        .get_matches();
     let text = matches.values_of_lossy("location").unwrap();
     text
-
-    
-    
 }
 
