@@ -1,4 +1,4 @@
-/// Create a unified tstenvironment
+/// Create a unified testenvironment
 #[cfg(test)]
 mod tests {
     

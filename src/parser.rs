@@ -1,6 +1,6 @@
 mod configparser;
 mod treeparser;
-
+mod schema;
 // Parser Module
 // Receives the yaml configuration file and parses it to create the internal state structure of
 // the program. It conducts the semantic analysis of the passed configuration before creating the
