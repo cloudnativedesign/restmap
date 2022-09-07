@@ -1,4 +1,25 @@
+///Attributes are used within the scope of a Component to define the set of allowed configuration
+///attributes they can receive
+trait Attribute<T> {
 
+    ///Type guard to be used on functions working only with reference attributes
+    fn is_reference(&self) -> bool;
+        
+    
+    ///Checks if the attribute is required
+    fn is_required(&self) -> bool {
+        self.required
+    }
+
+    ///Sets the value after the reference has resolved 
+    fn resolve(&mut self, value: T) {
+        if self.is_reference() && !self.resolved {
+            //Set the value 
+            self.resolved_value = value;
+            self.resolved = true;
+        }
+    }
+}
 //REFERENCE ATTRIBUTE -------------------------
 struct ReferenceAttribute<'a, T> {
     name: &'a str,
