@@ -5,15 +5,22 @@
 ///by the configuration parser to check syntax is correct
 pub struct Schema<'a, T> {
     version: Version,
-    components: &'a [Component<'a, T>]
+    components: Option<&'a [Component<'a, T>]>
+}
+impl<'a, T> Schema<'a, T> {
+    pub fn new(version: &str, components: Option<&'a[Component<'a, T>]>) -> Self {
+        Schema {
+            version,
+            components
+        }
+    }
+    ///Loads a schema template specifying the allowed components in a given version of the schema 
+    pub fn load(&mut self, template: SchemaTemplate) {
+        unimplemented!();
+    }
 }
 
 type Version = String;
-//impl version {
-//    fn new(value: &str) -> Self {
-//       value.to_string() 
-//    }
-//}
 
 ///A schema element with the associated attributes supported in a given version
 struct Component<'a, T> {
@@ -52,7 +59,7 @@ trait Attribute<T> {
 
     ///Sets the value after the reference has resolved 
     fn resolve(&mut self, value: T) {
-        if self.is_reference() & !self.resolved {
+        if self.is_reference() && !self.resolved {
             //Set the value 
             self.resolved_value = value;
             self.resolved = true;
@@ -126,6 +133,11 @@ enum ReferenceAttributeType {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn instantiate_schema() {
+        let schema = Schema::new("0.1.0", None);
+    }
 
     #[test]
     fn instantiate_version() {

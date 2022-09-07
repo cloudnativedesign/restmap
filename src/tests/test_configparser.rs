@@ -2,7 +2,7 @@
 mod tests {
     #[test]
     fn load_yaml() {
-        notimplemented!();
+        unimplemented!()
     }
 
     #[test]
@@ -11,25 +11,25 @@ mod tests {
         //Load yaml 
 
         //Create an endpoint config
-        notimplemted!()
+        unimplemented!()
     }
     #[test]
     fn parse_param() {
         //Load yaml
         //Parse param configuration
-        notimplemted!()
+        unimplemented!()
     }
 
     #[test]
     fn parse_resolver() {
-        notimplemted!()
+        unimplemented!()
     }
 
     #[test]
     fn parse_job() {
         // Load yaml
         // Parse job configuration
-        notimplemted!()
+        unimplemented!()
     }
 
 

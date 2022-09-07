@@ -3,19 +3,13 @@
 mod tests {
     
     #[test]
-    fn load_yaml() {
-        notimplemented!()
-
-    }
-
-    #[test]
     fn parse_job_template() {
-        notimplemented!() 
+        unimplemented!() 
     }
 
     #[test]
     fn parse_endpoints() {
-        NotImplemented!()
+        unimplemented!() 
     }
 }
 
