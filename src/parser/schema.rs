@@ -1,4 +1,4 @@
-use serde_derive::Serialize;
+use serde_derive::{Serialize, Deserialize};
 use std::collections::HashMap;
 use super::component::Component;
 use super::schemaparser::SchemaTemplate;
@@ -9,10 +9,10 @@ use super::schemaparser::SchemaTemplate;
 ///by the configuration parser to check syntax is correct
 pub struct Schema<'a, T> {
     version: Version,
-    components: Option<&'a [Component<'a, T>]>
+    components: Option<&'a [Component<T>]>
 }
 impl<'a, T> Schema<'a, T> {
-    pub fn new(version: &str, components: Option<&'a[Component<'a, T>]>) -> Self {
+    pub fn new(version: String, components: Option<&'a[Component<T>]>) -> Self {
         Schema {
             version,
             components
@@ -27,6 +27,7 @@ impl<'a, T> Schema<'a, T> {
 pub type Version = String;
 
 // Defines the types allowed in the definition of a schema
+#[derive(Debug, Serialize, Deserialize)]
 enum AttributeType {
     Str,
     Bool,
@@ -35,28 +36,28 @@ enum AttributeType {
     Float
 }
 ///Attributes define available attributes on scheme structs
-#[derive(Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 struct AttributeSchema {
-    name: &str, 
+    name: String, 
     value_type: AttributeType,
 }
 /// Defines supported constructs on a given schema
-#[derive(Serialize)]
-struct ComponentSchema<'a> {
-    name: &str,
-    attributes: &[AttributeSchema]
+#[derive(Debug, Serialize, Deserialize)]
+struct ComponentSchema {
+    name: String,
+    attributes: Vec<AttributeSchema>
 }
 
 /// Allowed data to store as metadata on a configuration schema 
-#[derive(Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 struct MetadataSchema {
     required: bool,
-    attributes: HashMap<&str, AttributeSchema>
+    attributes: HashMap<String, AttributeSchema>
 }
 /// A supported resolver type to utilize to resolve values in the schema
-#[derive(Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 struct ResolverSchema {
-    name: &str,
+    name: String,
 }
 
 #[cfg(test)]
@@ -65,7 +66,7 @@ mod tests {
 
     #[test]
     fn instantiate_schema() {
-        let schema = Schema::new("0.1.0", None);
+        unimplemented!()
     }
 
     #[test]

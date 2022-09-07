@@ -17,13 +17,14 @@ struct NodeConfig {}
 /// Holds the public management interface to the graph
 /// It enables structured traversal of the graph through iterator interfaces.
 ///
-pub struct Graph<T>
+pub struct Graph<'a, T>
 where T: Parse<T> + Node {
-    root: Option<Rc<RefMut<T>>>,
+    root: Option<Rc<RefMut<'a, T>>>,
     depth: i32
 }
-impl<T> Graph<T> {
-    pub fn new() {
+impl<'a, T> Graph<'a, T> 
+where T: Parse<T> + Node {
+    pub fn new() -> Self {
         Graph {
             root: None,
             depth: 0,
@@ -81,13 +82,10 @@ impl ReplaceString {
 struct EndpointNode {
     url: ReplaceString
 }
-impl<T> EndpointNode<T> {
+impl EndpointNode {
     pub fn new(config: NodeConfig) -> Self {
         //Check the NodeConfig is valid
-
-        EndpointNode {
-            
-        }
+        unimplemented!();
     }
 }
 

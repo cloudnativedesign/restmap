@@ -1,29 +1,22 @@
 use super::schema::{Version};
 ///Attributes are used within the scope of a Component to define the set of allowed configuration
 ///attributes they can receive
-trait Attribute<T> {
+pub trait Attribute<T> {
 
     ///Type guard to be used on functions working only with reference attributes
     fn is_reference(&self) -> bool;
+
+    fn is_resolved(&self) -> bool;
         
-    
     ///Checks if the attribute is required
-    fn is_required(&self) -> bool {
-        self.required
-    }
+    fn is_required(&self) -> bool;
 
     ///Sets the value after the reference has resolved 
-    fn resolve(&mut self, value: T) {
-        if self.is_reference() && !self.resolved {
-            //Set the value 
-            self.resolved_value = value;
-            self.resolved = true;
-        }
-    }
+    fn resolve(&mut self, value: T);
 }
 //REFERENCE ATTRIBUTE -------------------------
-struct ReferenceAttribute<'a, T> {
-    name: &'a str,
+pub struct ReferenceAttribute<'a, T> {
+    name: String,
     reference_type: ReferenceAttributeType,
     reference: &'a str,
     required: bool, 
@@ -31,8 +24,8 @@ struct ReferenceAttribute<'a, T> {
     resolved_value: Option<T>
 } 
 impl<'a, T> ReferenceAttribute<'a, T> {
-    pub fn new(name: &str, 
-               reference: &str,
+    pub fn new(name: String, 
+               reference: &'a str,
                reference_type: ReferenceAttributeType,
                required: bool,
                ) -> Self {
@@ -48,10 +41,17 @@ impl<'a, T> ReferenceAttribute<'a, T> {
 }
 impl<'a, T> Attribute<T> for ReferenceAttribute<'a, T> {
     fn is_reference(&self) -> bool {true}
+    fn is_resolved(&self) -> bool {self.resolved}
+    fn is_required(&self) -> bool {self.required}
+
+    fn resolve(&mut self, value: T) {
+        self.resolved_value = Some(value);
+        self.resolved = true;
+    }
 }
 
 //VALUE ATTRIBUTE-------------------------
-struct ValueAttribute<'a> {
+pub struct ValueAttribute<'a> {
     name: &'a str,
     datatype: ValueType,
     required: bool,
@@ -69,7 +69,7 @@ impl<'a, T> Attribute<T> for ValueAttribute<'a> {
 }
 
 ///Supported data types within the Schema
-enum ValueType {
+pub enum ValueType {
     Str,
     Bool,
     Int,
@@ -78,7 +78,7 @@ enum ValueType {
 }
 
 ///Allowed reference attributes within the Schema version
-enum ReferenceAttributeType {
+pub enum ReferenceAttributeType {
     Resolver,
     Endpoint,
     Param

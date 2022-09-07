@@ -1,0 +1,7 @@
+!Version: 2022-01-01
+!Metadata:
+  required: false
+  attributes:
+    url: 
+      name: url
+      value_type: !Str

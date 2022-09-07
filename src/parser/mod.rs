@@ -18,7 +18,7 @@ pub mod configparser;
 trait Parse<T> {
 /// Parse configuration blocks from a passed RawConfig into a parseTree representing a program tree
 /// with resolved execution blocks.
-fn parse(config: configparser::RawConfig) {}
+fn parse(&self, config: configparser::RawConfig) {}
 
 }
 
@@ -35,7 +35,11 @@ pub fn new() -> Self {
     }
 } 
 }
-impl Parse for EndpointParser {}
+impl<T> Parse<T> for EndpointParser {
+    fn parse(&self, config: configparser::RawConfig) {
+        unimplemented!();
+    }
+}
 
 pub struct ParamParser {}
 impl ParamParser {
@@ -44,7 +48,9 @@ pub fn new() -> Self {
     }
 } 
 }
-impl Parse for ParamParser{}
+impl<T> Parse<T> for ParamParser{
+    unimplemented!();
+}
 
 pub struct ResolverParser {}
 impl ResolverParser {
@@ -53,9 +59,11 @@ pub fn new() -> Self {
     }
 } 
 }
-impl Parse for ResolverParser {
+impl<T> Parse<T> for ResolverParser {
 
-fn parse(&self, config: configparser::RawConfig) -> Box<dyn configuration::ResolverConfig> {
+    fn parse(&self, config: configparser::RawConfig){
+        unimplemented!(); 
+    }
 
 }
 
