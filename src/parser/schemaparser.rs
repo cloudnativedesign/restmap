@@ -1,8 +1,9 @@
+use std::fs;
 use std::collections::HashMap;
-use schema::{Version, AttributeType, Component, Metadata, Attribute};
+use schema::{Version, AttributeType, Component, Metadata, Attribute, Resolver};
 //Parses a schema configuration file into a schema objecect usable within the system
 
-struct SchemaTemplate {
+pub struct SchemaTemplate {
     version: Version,
     components: &[Component],
     resolvers: &[Resolver],
@@ -31,20 +32,15 @@ impl SchemaParser {
         }
     }
     ///Parse a schema template yaml file
-    pub fn parse(&mut self, file: &str) -> SchemaTemplate {
+    pub fn parse(&mut self, file_path: &str) -> SchemaTemplate {
         // Read yaml file
+        let contents = fs::read_to_string(file_path)
+            .expect("File not found at {}", file_path);
 
         // Parse out list of components
         // Parse out list of attributes per component
         // Create and return SchemaTemplate
-        SchemaTemplate {
-            version,
-            components
-        }
     }
-
-
-
 }
 
 #[cfg(test)]
@@ -58,6 +54,11 @@ mod tests {
     #[test]
     fn instantiate_schematemplate() {
         let template_v1 = SchemaTemplate::new("0.1.0");
+    }
+    #[test]
+    fn load_file() {
+        let parser = SchemaParser::new();
+        let content = parser.load_file("../../data/schemata/2022-01-1.yaml");
     }
     #[test]
     fn parse_schema() {

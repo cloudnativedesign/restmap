@@ -1,8 +1,8 @@
 use attribute::{Attribute, ReferenceAttribute, ValueAttribute};
-use schema::{Version};
+use super::schema::{Version};
 
 ///An element contained in a schema
-struct Component<'a, T> {
+pub struct Component<'a, T> {
     version: Version,
     attributes: Option<&'a Vec<Box<dyn Attribute<T>>>>
 }
@@ -32,4 +32,5 @@ mod tests {
     fn instantiate_component() {
         let component = Component::new();
     }
+
 }

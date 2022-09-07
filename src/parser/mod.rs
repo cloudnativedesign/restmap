@@ -1,9 +1,8 @@
-mod treeparser;
-mod component;
-mod attribute;
-mod schema;
-mod schemaparser;
-mod configparser;
+pub mod component;
+pub mod attribute;
+pub mod schema;
+pub mod schemaparser;
+pub mod configparser;
 
 // Parser Module
 // Receives the yaml configuration file and parses it to create the internal state structure of

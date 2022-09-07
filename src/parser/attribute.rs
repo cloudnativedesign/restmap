@@ -1,3 +1,4 @@
+use super::schema::{Version};
 ///Attributes are used within the scope of a Component to define the set of allowed configuration
 ///attributes they can receive
 trait Attribute<T> {
@@ -85,29 +86,10 @@ enum ReferenceAttributeType {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
     fn instantiate_attribute() {
         let url = ValueAttribute::new("url", ValueType::Str, false);
-    }
-    #[test]
-    fn instantiate_component() {
-        let v: Version = "0.1.0".to_string();
-        let comp = Component::new(
-                &v,
-                None
-            );
-    }
-    #[test]
-    fn add_attribute_to_component() {
-        let comp = Component::new(&"0.1.0".to_string(), None);
-        let url = ValueAttribute::new("url", ValueType::Str, false);
-        comp.add_attr(&url);
-    }
-    #[test]
-    fn remove_attribute_from_component() {
-        let comp = Component::new(&"0.1.0".to_string(), None);
-        let url = ValueAttribute::new("url", ValueType::Str, false);
-        comp.add_attr(&url);
-        comp.remove_attr("url");
     }
 }

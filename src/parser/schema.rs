@@ -1,9 +1,7 @@
-use serde::ser::{Serialize, SerializeStruct, Serializer};
+use serde_derive::Serialize;
 use std::collections::HashMap;
-use component::{Component};
-use attribute::*;
-use configparser::*;
-use schemaparser::{SchemaTemplate};
+use super::component::Component;
+use super::schemaparser::SchemaTemplate;
 //Details the schema definition to manage versions of the parsing system
 //
 
@@ -26,7 +24,7 @@ impl<'a, T> Schema<'a, T> {
     }
 }
 
-type Version = String;
+pub type Version = String;
 
 // Defines the types allowed in the definition of a schema
 enum AttributeType {
@@ -37,68 +35,29 @@ enum AttributeType {
     Float
 }
 ///Attributes define available attributes on scheme structs
-struct Attribute {
+#[derive(Serialize)]
+struct AttributeSchema {
     name: &str, 
     value_type: AttributeType,
 }
-impl Serialize for Attribute {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where
-            S: Serializer, {
-                let mut s= serializer.serialize_struct("Attribute", 2)?;
-                s.serialize_field("name", &self.name)?;
-                s.serialize_field("value_type", &self.value_type)?;
-                s.end()
-            }
-}
 /// Defines supported constructs on a given schema
-struct Component {
+#[derive(Serialize)]
+struct ComponentSchema<'a> {
     name: &str,
-    attributes: &[Attribute]
-}
-impl Serialize for Component {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> 
-    where
-    S: Serializer 
-    {
-        let mut s = serializer.serialize_struct("Component", 2)?;
-        s.serialize_field("name", &self.name)?;
-        s.serialize_field("attributes", &self.attributes)?;
-        s.end()
-    }
+    attributes: &[AttributeSchema]
 }
 
 /// Allowed data to store as metadata on a configuration schema 
-struct Metadata {
+#[derive(Serialize)]
+struct MetadataSchema {
     required: bool,
-    attributes: HashMap<&str, Attribute>
-}
-impl Serialize for Metadata {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer {
-            let mut s = serializer.serialize_struct("Metadata", 2)?;
-            s.serialize_field("required", &self.required)?;
-            s.serialize_field("attributes", &self.attributes)?;
-            s.end()
-        }
+    attributes: HashMap<&str, AttributeSchema>
 }
 /// A supported resolver type to utilize to resolve values in the schema
-struct Resolver {
+#[derive(Serialize)]
+struct ResolverSchema {
     name: &str,
 }
-impl Serialize for Resolver {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> 
-    where 
-    S: Serializer {
-        let mut s = serializer.serialize_struct("Resolver", 1)?;
-        s.serialize_field("name", &self.name)?;
-        s.end()
-    }
-}
-
-
-
 
 #[cfg(test)]
 mod tests {
