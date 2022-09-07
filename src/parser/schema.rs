@@ -8,7 +8,7 @@ pub struct Schema<'a, T> {
     components: &'a [Component<'a, T>]
 }
 
-type Version = (String);
+type Version = String;
 //impl version {
 //    fn new(value: &str) -> Self {
 //       value.to_string() 
@@ -18,10 +18,10 @@ type Version = (String);
 ///A schema element with the associated attributes supported in a given version
 struct Component<'a, T> {
     version: Version,
-    attributes: &'a Vec<Box<dyn Attribute<T>>>
+    attributes: Option<&'a Vec<Box<dyn Attribute<T>>>>
 }
 impl<'a, T> Component<'a, T> {
-    pub fn new(version: &Version, attributes: &[Box<dyn Attribute<T>>]) -> Self {
+    pub fn new(version: &Version, attributes: Option<&[Box<dyn Attribute<T>>]>) -> Self {
         Component {
             version,
             attributes
@@ -30,6 +30,11 @@ impl<'a, T> Component<'a, T> {
     ///Appends additional allowed attribute to the Component
     pub fn add_attr(&mut self, attribute: &Box<dyn Attribute<T>>) {
         *self.attributes.push(attribute)
+    }
+
+    ///Removes an attribute by name
+    pub fn remove_attr(&mut self, attribute_name: &str) {
+        self.attributes = self.attributes.iter_mut().filter(|attr| *attr.name == attribute_name);
     }
 }
 ///Attributes are used within the scope of a Component to define the set of allowed configuration
@@ -54,23 +59,48 @@ trait Attribute<T> {
         }
     }
 }
+//REFERENCE ATTRIBUTE -------------------------
 struct ReferenceAttribute<'a, T> {
     name: &'a str,
     reference_type: ReferenceAttributeType,
-    reference: String,
-    required: bool,
+    reference: &'a str,
+    required: bool, 
     resolved: bool,
-    resolved_value: T
+    resolved_value: Option<T>
+} 
+impl<'a, T> ReferenceAttribute<'a, T> {
+    pub fn new(name: &str, 
+               reference: &str,
+               reference_type: ReferenceAttributeType,
+               required: bool,
+               ) -> Self {
+        ReferenceAttribute {
+            name, 
+            reference_type, 
+            reference,
+            required,
+            resolved: false,
+            resolved_value: None,
+        }
+    }
 }
 impl<'a, T> Attribute<T> for ReferenceAttribute<'a, T> {
     fn is_reference(&self) -> bool {true}
 }
 
+//VALUE ATTRIBUTE-------------------------
 struct ValueAttribute<'a> {
     name: &'a str,
     datatype: ValueType,
     required: bool,
 
+}
+impl<'a> ValueAttribute<'a> {
+    pub fn new(name: &str, datatype: ValueType, required:bool) -> Self {
+        ValueAttribute {
+            name, datatype, required
+        }
+    }
 }
 impl<'a, T> Attribute<T> for ValueAttribute<'a> {
    fn is_reference(&self) -> bool {false} 
@@ -93,7 +123,6 @@ enum ReferenceAttributeType {
 }
 
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -103,11 +132,28 @@ mod tests {
         let version_010: Version = "0.1.0".to_string();
     }
     #[test]
-    fn instantiate_component() {
-        let comp = Component::new(
+    fn instantiate_attribute() {
+        let url = ValueAttribute::new("url", ValueType::Str, false);
     }
     #[test]
-    fn instantiate_version() {
-        let mut version = Version::new();
+    fn instantiate_component() {
+        let v: Version = "0.1.0".to_string();
+        let comp = Component::new(
+                &v,
+                None
+            );
+    }
+    #[test]
+    fn add_attribute_to_component() {
+        let comp = Component::new(&"0.1.0".to_string(), None);
+        let url = ValueAttribute::new("url", ValueType::Str, false);
+        comp.add_attr(&url);
+    }
+    #[test]
+    fn remove_attribute_from_component() {
+        let comp = Component::new(&"0.1.0".to_string(), None);
+        let url = ValueAttribute::new("url", ValueType::Str, false);
+        comp.add_attr(&url);
+        comp.remove_attr("url");
     }
 }
