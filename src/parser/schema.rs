@@ -36,7 +36,7 @@ enum AttributeType {
     Int,
     Float
 }
-
+///Attributes define available attributes on scheme structs
 struct Attribute {
     name: &str, 
     value_type: AttributeType,
@@ -51,7 +51,7 @@ impl Serialize for Attribute {
                 s.end()
             }
 }
-
+/// Defines supported constructs on a given schema
 struct Component {
     name: &str,
     attributes: &[Attribute]
@@ -68,6 +68,7 @@ impl Serialize for Component {
     }
 }
 
+/// Allowed data to store as metadata on a configuration schema 
 struct Metadata {
     required: bool,
     attributes: HashMap<&str, Attribute>
@@ -82,6 +83,7 @@ impl Serialize for Metadata {
             s.end()
         }
 }
+/// A supported resolver type to utilize to resolve values in the schema
 struct Resolver {
     name: &str,
 }
@@ -94,6 +96,9 @@ impl Serialize for Resolver {
         s.end()
     }
 }
+
+
+
 
 #[cfg(test)]
 mod tests {
