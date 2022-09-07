@@ -72,11 +72,28 @@ struct Metadata {
     required: bool,
     attributes: HashMap<&str, Attribute>
 }
-
+impl Serialize for Metadata {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer {
+            let mut s = serializer.serialize_struct("Metadata", 2)?;
+            s.serialize_field("required", &self.required)?;
+            s.serialize_field("attributes", &self.attributes)?;
+            s.end()
+        }
+}
 struct Resolver {
     name: &str,
 }
-
+impl Serialize for Resolver {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> 
+    where 
+    S: Serializer {
+        let mut s = serializer.serialize_struct("Resolver", 1)?;
+        s.serialize_field("name", &self.name)?;
+        s.end()
+    }
+}
 
 #[cfg(test)]
 mod tests {
