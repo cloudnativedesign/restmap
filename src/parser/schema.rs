@@ -56,6 +56,17 @@ struct Component {
     name: &str,
     attributes: &[Attribute]
 }
+impl Serialize for Component {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> 
+    where
+    S: Serializer 
+    {
+        let mut s = serializer.serialize_struct("Component", 2)?;
+        s.serialize_field("name", &self.name)?;
+        s.serialize_field("attributes", &self.attributes)?;
+        s.end()
+    }
+}
 
 struct Metadata {
     required: bool,
