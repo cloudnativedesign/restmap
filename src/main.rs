@@ -1,5 +1,6 @@
 mod parser;
 mod load;
+mod cmdln;
 
 fn main() {
     // Establish a connection to the cli to receive instructions
