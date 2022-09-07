@@ -1,3 +1,5 @@
+use serde::ser::{Serialize, SerializeStruct, Serializer};
+use std::collections::HashMap;
 use component::{Component};
 use attribute::*;
 use configparser::*;
@@ -25,6 +27,45 @@ impl<'a, T> Schema<'a, T> {
 }
 
 type Version = String;
+
+// Defines the types allowed in the definition of a schema
+enum AttributeType {
+    Str,
+    Bool,
+    Array,
+    Int,
+    Float
+}
+
+struct Attribute {
+    name: &str, 
+    value_type: AttributeType,
+}
+impl Serialize for Attribute {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+        where
+            S: Serializer, {
+                let mut s= serializer.serialize_struct("Attribute", 2)?;
+                s.serialize_field("name", &self.name)?;
+                s.serialize_field("value_type", &self.value_type)?;
+                s.end()
+            }
+}
+
+struct Component {
+    name: &str,
+    attributes: &[Attribute]
+}
+
+struct Metadata {
+    required: bool,
+    attributes: HashMap<&str, Attribute>
+}
+
+struct Resolver {
+    name: &str,
+}
+
 
 #[cfg(test)]
 mod tests {

@@ -1,11 +1,13 @@
 use std::collections::HashMap;
-use schema::{Version};
+use schema::{Version, AttributeType, Component, Metadata, Attribute};
 //Parses a schema configuration file into a schema objecect usable within the system
 
 struct SchemaTemplate {
     version: Version,
-    components: HashMap,
+    components: &[Component],
+    resolvers: &[Resolver],
 }
+
 impl SchemaTemplate {
     pub fn new(version: &str) -> Self {
         let version: Version = version.to_string();
@@ -20,16 +22,25 @@ impl SchemaTemplate {
 ///Reads a schema from file and parses it into a SchemaTemplate usable to load into a schema for
 ///valdiation and graph compilation
 struct SchemaParser {
-    filebuffer: &[u8],
 
 }
+
 impl SchemaParser {
     pub fn new() -> Self {
         SchemaParser {
         }
     }
+    ///Parse a schema template yaml file
     pub fn parse(&mut self, file: &str) -> SchemaTemplate {
-       unimplemented!();
+        // Read yaml file
+
+        // Parse out list of components
+        // Parse out list of attributes per component
+        // Create and return SchemaTemplate
+        SchemaTemplate {
+            version,
+            components
+        }
     }
 
 
