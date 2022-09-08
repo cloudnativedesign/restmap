@@ -15,15 +15,16 @@ impl<T> Component<T> {
     }
     ///Appends additional allowed attribute to the Component
     pub fn add_attr(&mut self, attribute: Box<dyn Attribute<T>>) {
-        self.attributes.map(|vec| {
+        self.attributes.take().map(|mut vec| {
             vec.push(attribute)});
     }
 
     ///Removes an attribute by name
     pub fn remove_attr(&mut self, attribute_name: &str) {
-        self.attributes.into_iter().filter(|attr|{
-           attr.name == attribute_name 
-        });
+        //self.attributes.into_iter().filter(|attr|{
+            //*attr.has_name(attribute_name)
+        //});
+        unimplemented!();
     }
 
 }
@@ -34,7 +35,6 @@ mod tests {
 
     #[test]
     fn instantiate_component() {
-        let component = Component::new();
     }
 
 }

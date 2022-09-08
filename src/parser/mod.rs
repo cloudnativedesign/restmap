@@ -48,9 +48,6 @@ pub fn new() -> Self {
     }
 } 
 }
-impl<T> Parse<T> for ParamParser{
-    unimplemented!();
-}
 
 pub struct ResolverParser {}
 impl ResolverParser {

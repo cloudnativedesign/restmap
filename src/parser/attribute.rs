@@ -10,6 +10,9 @@ pub trait Attribute<T> {
         
     ///Checks if the attribute is required
     fn is_required(&self) -> bool;
+    
+    /// Enables filter operations 
+    fn has_name(&self, name: &str) -> bool;
 
     ///Sets the value after the reference has resolved 
     fn resolve(&mut self, value: T);
@@ -43,6 +46,7 @@ impl<'a, T> Attribute<T> for ReferenceAttribute<'a, T> {
     fn is_reference(&self) -> bool {true}
     fn is_resolved(&self) -> bool {self.resolved}
     fn is_required(&self) -> bool {self.required}
+    fn has_name(&self, name: &str) -> bool {self.name == *name}
 
     fn resolve(&mut self, value: T) {
         self.resolved_value = Some(value);
@@ -51,21 +55,28 @@ impl<'a, T> Attribute<T> for ReferenceAttribute<'a, T> {
 }
 
 //VALUE ATTRIBUTE-------------------------
-pub struct ValueAttribute<'a> {
-    name: &'a str,
+pub struct ValueAttribute {
+    name: String,  
     datatype: ValueType,
     required: bool,
 
 }
-impl<'a> ValueAttribute<'a> {
-    pub fn new(name: &str, datatype: ValueType, required:bool) -> Self {
+impl ValueAttribute {
+    pub fn new(name: String, datatype: ValueType, required:bool) -> Self {
         ValueAttribute {
-            name, datatype, required
+            name, 
+            datatype, 
+            required
         }
     }
 }
-impl<'a, T> Attribute<T> for ValueAttribute<'a> {
-   fn is_reference(&self) -> bool {false} 
+impl<T> Attribute<T> for ValueAttribute {
+    fn is_reference(&self) -> bool {false}
+    fn is_resolved(&self) -> bool {false}
+    fn is_required(&self) -> bool {self.required}
+    fn has_name(&self, name: &str) -> bool {self.name == *name}
+
+    fn resolve(&mut self, value: T) {}
 }
 
 ///Supported data types within the Schema
@@ -90,6 +101,6 @@ mod tests {
 
     #[test]
     fn instantiate_attribute() {
-        let url = ValueAttribute::new("url", ValueType::Str, false);
+        let url = ValueAttribute::new("url".to_string(), ValueType::Str, false);
     }
 }

@@ -57,7 +57,7 @@ pub trait Node {
 trait Traverse<T>
 where T: Node {}
 
-trait Parse<T>
+pub trait Parse<T>
 where T: Node {
     ///Parses a NodeConfig map into a Node
     fn parse(&mut self, node: NodeConfig) -> T;
