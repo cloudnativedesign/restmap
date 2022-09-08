@@ -8,11 +8,13 @@ use std::collections::HashMap;
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SchemaTemplate {
     version: Version,
+    metadata: MetadataSchema, 
     components: Vec<ComponentSchema>,
     resolvers: Vec<ResolverSchema>,
 }
 
 pub type Version = String;
+
 
 // Defines the types allowed in the definition of a schema
 #[derive(Debug, Serialize, Deserialize)]
@@ -46,6 +48,7 @@ pub struct MetadataSchema {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ResolverSchema {
     name: String,
+    attributes: Vec<AttributeSchema>
 }
 
 #[cfg(test)]

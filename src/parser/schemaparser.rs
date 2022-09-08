@@ -48,6 +48,6 @@ mod tests {
     #[test]
     fn parse_schema() {
         let mut  parser =SchemaParser::new();
-        let schema: SchemaTemplate = parser.parse("../../data/teschema_v1.yaml").unwrap();
+        let schema: SchemaTemplate = parser.parse("./data/schemata/2022-01-01.yaml").unwrap();
     }
 }

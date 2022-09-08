@@ -1,7 +1,21 @@
-!Version: 2022-01-01
-!Metadata:
+version: 2022-01-01
+metadata:
   required: false
   attributes:
     url: 
       name: url
-      value_type: !Str
+      value_type: Str
+components:
+  - Endpoint:
+    name: Endpoint
+    attributes:
+      - kind: 
+        name: kind
+        value_type: !Str
+resolvers:
+  - ScopeResolver:
+    name: ScopeResolver
+    attributes:
+      - kind: 
+        name: kind
+        value_type: !Str
