@@ -1,0 +1,4 @@
+version: 2022-01-01
+kind: ScopeResolver
+attributes:
+  url: "https://www.amazon.com/{UserId}"

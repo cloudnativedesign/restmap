@@ -8,11 +8,48 @@
 // * 
 use std::rc::Rc;
 use std::cell::{RefCell, RefMut};
+use super::configuration::{Configuration, Config};
+//
+//
+//
+/// Constructs a parametrized graph from a configuration file
+struct ConfigParser<'a, T>
+where 
+T: Parse<T> + Node {
+    configuration: Option<Configuration>,
+    graph: Graph<'a, T>,
+}
+impl<'a, T> ConfigParser<'a, T> 
+where T: Parse<T> + Node {
+    ///Create a new parser for a specific Schema Configuration
+    pub fn new() -> Self {
+        ConfigParser {
+            configuration: None,
+            graph: Graph::new(),
+        }
+    }
+    ///Parses a configuration yaml file and stores the values internally for further processing.
+    ///All occuring parsing errors are returned unhandled to the caller.
+    pub fn parse_config(&mut self, file_path: &str) -> Result<(),  Box<dyn std::error::Error>> {
+        unimplemented!();
+    }
 
-pub struct RawConfig {}
+    ///Get shared access to the graph
+    pub fn graph(&self) -> &Graph<T> {
+        &self.graph
+    }
 
-struct NodeConfig {}
+    ///Get exclusive access to the graph
+    pub fn get_mut(&mut self) -> &mut Graph<'a, T> {
+        &mut self.graph
+    }
+    pub fn components(&self, kind: ConfigKind) -> Box<dyn Config> {
 
+    }
+}
+
+struct NodeConfig {
+}
 
 /// Holds the public management interface to the graph
 /// It enables structured traversal of the graph through iterator interfaces.
@@ -96,3 +133,12 @@ struct IteratorNode {}
 
 struct ParamNode {}
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_instantiates(){
+        let parser = ConfigParser::new();
+    }
+}

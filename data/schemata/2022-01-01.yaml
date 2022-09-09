@@ -1,17 +1,14 @@
 version: 2022-01-01
-metadata:
-  required: false
-  attributes:
-    url: 
-      name: url
-      value_type: Str
 components:
   - Endpoint:
     name: Endpoint
+    kind:
+      - BaseEndpoint
+      - RelativeEndpoint
     attributes:
-      - kind: 
-        name: kind
-        value_type: !Str
+      - url: 
+        name: url
+        value_type: Str
 resolvers:
   - ScopeResolver:
     name: ScopeResolver
@@ -19,3 +16,13 @@ resolvers:
       - kind: 
         name: kind
         value_type: !Str
+      - base:
+        name: base
+        value_type: !Reference
+      - url:
+        name: url
+        value_type: !Str
+      - params:
+        name: params
+        value_type: !Struct
+      

@@ -7,6 +7,8 @@ edition = "2021"
 
 [dependencies]
 clap = "3.2.18"
+erased-serde = "0.3.23"
 serde = "1.0"
 serde_derive = "1.0.144"
 serde_yaml = "0.9"
+typetag = "0.2.3"

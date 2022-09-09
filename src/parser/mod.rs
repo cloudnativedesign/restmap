@@ -3,7 +3,7 @@ pub mod attribute;
 pub mod schema;
 pub mod schemaparser;
 pub mod configparser;
-
+mod configuration;
 // Parser Module
 // Receives the yaml configuration file and parses it to create the internal state structure of
 // the program. It conducts the semantic analysis of the passed configuration before creating the program tree with the nodes responsible for execution.
